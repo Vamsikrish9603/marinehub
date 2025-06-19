@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Marine Engineer's Hub</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      padding: 20px;
+    }
+    .subjects, .upload-section, .pdf-list {
+      background: white;
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .subjects button {
+      margin: 5px;
+      padding: 10px 15px;
+      background: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .subjects button:hover {
+      background-color: #004d99;
+    }
+    input, select {
+      padding: 8px;
+      margin: 8px 0;
+      width: 100%;
+    }
+    .pdf-item {
+      margin: 10px 0;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+    .pdf-item a {
+      margin-right: 10px;
+    }
+    footer {
+      background-color: #003366;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Welcome to Marine Engineers Hub</h1>
+  <p>by vamsi krishna koraganji</p>
+</header>
+
+<div class="container">
+
+  <div class="subjects">
+    <h2>Subject Categories</h2>
+    <button onclick="showPDFs('Thermodynamics')">Thermodynamics</button>
+    <button onclick="showPDFs('Marine Engines')">Marine Engines</button>
+    <button onclick="showPDFs('Naval Architecture')">Naval Architecture</button>
+    <button onclick="showPDFs('Fluid Mechanics')">Fluid Mechanics</button>
+    <button onclick="showPDFs('Marine Electrical Technology')">Marine Electrical Tech</button>
+  </div>
+
+  <div class="upload-section">
+    <h2>Upload PDF</h2>
+    <form id="uploadForm">
+      <input type="text" id="pdfTitle" placeholder="PDF Title" required />
+      <select id="pdfSubject" required>
+        <option value="">Select Subject</option>
+        <option value="Thermodynamics">Thermodynamics</option>
+        <option value="Marine Engines">Marine Engines</option>
+        <option value="Naval Architecture">Naval Architecture</option>
+        <option value="Fluid Mechanics">Fluid Mechanics</option>
+        <option value="Marine Electrical Technology">Marine Electrical Technology</option>
+      </select>
+      <input type="file" id="pdfFile" accept="application/pdf" required />
+      <button type="submit">Upload PDF</button>
+    </form>
+  </div>
+
+  <div class="pdf-list">
+    <h2>Uploaded PDFs</h2>
+    <div id="pdfContainer">
+      <p>No PDFs uploaded yet.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Website created by <strong>Vamsi Krishna Koraganji</strong> | Email: <a href="mailto:vamsikrishnakoraganji96@gmail.com" style="color: #aad4ff;">vamsikrishnakoraganji96@gmail.com</a></p>
+</footer>
+
+<script>
+  const pdfs = [];
+
+  document.getElementById('uploadForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const title = document.getElementById('pdfTitle').value;
+    const subject = document.getElementById('pdfSubject').value;
+    const file = document.getElementById('pdfFile').files[0];
+
+    if (title && subject && file) {
+      const url = URL.createObjectURL(file);
+      pdfs.push({ title, subject, url });
+      alert("PDF uploaded successfully!");
+      document.getElementById('uploadForm').reset();
+    }
+  });
+
+  function showPDFs(subject) {
+    const container = document.getElementById('pdfContainer');
+    const filtered = pdfs.filter(pdf => pdf.subject === subject);
+    if (filtered.length === 0) {
+      container.innerHTML = `<p>No PDFs under ${subject}.</p>`;
+    } else {
+      container.innerHTML = '';
+      filtered.forEach(pdf => {
+        container.innerHTML += `
+          <div class="pdf-item">
+            <strong>${pdf.title}</strong> (${pdf.subject})<br/>
+            <a href="${pdf.url}" target="_blank">View</a>
+            <a href="${pdf.url}" download>Download</a>
+          </div>
+        `;
+      });
+    }
+  }
+</script>
+
+</body>
+</html>
